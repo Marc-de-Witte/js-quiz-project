@@ -50,7 +50,29 @@ const vragen = [
     correctIndex: 3
   }
 ];
-huidige_vraag = document.getElementById("vragen");
-score = document.getElementById("score");
-console.log(vragen)
+const score = document.getElementById("score");
+function showQuestion(vraagObject) {
+  const huidige_vraag = document.getElementById("vragen");
+  const antwoorden = document.getElementById("weergeven");
+  const feedback = document.getElementById("feedback");
+
+  huidige_vraag.textContent = "";
+  antwoorden.innerHTML = "";
+  feedback.textContent = "";
+
+  huidige_vraag.textContent = vraagObject.vraag;
+
+  vraagObject.opties.forEach((optie, index) => {
+    const knop = document.createElement("button");
+    knop.textContent = optie;
+    knop.classList.add("antwoord-knop");
+
+    knop.addEventListener("click", () => {
+      controleerAntwoorden(index, vraagObject.correctIndex);
+    });
+
+    antwoorden.appendChild(knop);
+  });
+}
+
 
