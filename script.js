@@ -50,17 +50,18 @@ const vragen = [
     correctIndex: 3
   }
 ];
-const score = document.getElementById("score");
+
+let huidigeScore = 0;
+let huidigeVraagIndex = 0;
+
 function showQuestion(vraagObject) {
   const huidige_vraag = document.getElementById("vragen");
   const antwoorden = document.getElementById("weergeven");
   const feedback = document.getElementById("feedback");
 
-  huidige_vraag.textContent = "";
+  huidige_vraag.textContent = vraagObject.vraag;
   antwoorden.innerHTML = "";
   feedback.textContent = "";
-
-  huidige_vraag.textContent = vraagObject.vraag;
 
   vraagObject.opties.forEach((optie, index) => {
     const knop = document.createElement("button");
@@ -75,4 +76,40 @@ function showQuestion(vraagObject) {
   });
 }
 
+function controleerAntwoorden(gekozenIndex, correctIndex) {
+  const feedback = document.getElementById("feedback");
+  const scoreElement = document.getElementById("score");
 
+  if (gekozenIndex === correctIndex) {
+    feedback.textContent = "Goed gedaan!";
+    feedback.style.color = "green";
+
+    huidigeScore++;
+    scoreElement.textContent = "Score: " + huidigeScore;
+  } else {
+    feedback.textContent = "Helaas, fout";
+    feedback.style.color = "red";
+  }
+
+  setTimeout(() => {
+    huidigeVraagIndex++;
+
+    if (huidigeVraagIndex < vragen.length) {
+      showQuestion(vragen[huidigeVraagIndex]);
+    } else {
+      toonEindscherm();
+    }
+  }, 1000);
+}
+
+function toonEindscherm() {
+  const huidige_vraag = document.getElementById("vragen");
+  const antwoorden = document.getElementById("weergeven");
+  const feedback = document.getElementById("feedback");
+
+  huidige_vraag.textContent = "Quiz voltooid!";
+  antwoorden.innerHTML = "";
+  feedback.textContent = "Je eindscore is: " + huidigeScore;
+}
+
+showQuestion(vragen[0]);
