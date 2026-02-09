@@ -58,10 +58,12 @@ function showQuestion(vraagObject) {
   const huidige_vraag = document.getElementById("vragen");
   const antwoorden = document.getElementById("weergeven");
   const feedback = document.getElementById("feedback");
+  const volgendeKnop = document.getElementById("volgende");
 
   huidige_vraag.textContent = vraagObject.vraag;
   antwoorden.innerHTML = "";
   feedback.textContent = "";
+  volgendeKnop.style.display = "none";
 
   vraagObject.opties.forEach((optie, index) => {
     const knop = document.createElement("button");
@@ -79,11 +81,11 @@ function showQuestion(vraagObject) {
 function controleerAntwoorden(gekozenIndex, correctIndex) {
   const feedback = document.getElementById("feedback");
   const scoreElement = document.getElementById("score");
+  const volgendeKnop = document.getElementById("volgende");
 
   if (gekozenIndex === correctIndex) {
     feedback.textContent = "Goed gedaan!";
     feedback.style.color = "green";
-
     huidigeScore++;
     scoreElement.textContent = "Score: " + huidigeScore;
   } else {
@@ -91,16 +93,18 @@ function controleerAntwoorden(gekozenIndex, correctIndex) {
     feedback.style.color = "red";
   }
 
-  setTimeout(() => {
-    huidigeVraagIndex++;
-
-    if (huidigeVraagIndex < vragen.length) {
-      showQuestion(vragen[huidigeVraagIndex]);
-    } else {
-      toonEindscherm();
-    }
-  }, 1000);
+  volgendeKnop.style.display = "block";
 }
+
+document.getElementById("volgende").addEventListener("click", () => {
+  huidigeVraagIndex++;
+
+  if (huidigeVraagIndex < vragen.length) {
+    showQuestion(vragen[huidigeVraagIndex]);
+  } else {
+    toonEindscherm();
+  }
+});
 
 function toonEindscherm() {
   const huidige_vraag = document.getElementById("vragen");
@@ -113,3 +117,4 @@ function toonEindscherm() {
 }
 
 showQuestion(vragen[0]);
+
