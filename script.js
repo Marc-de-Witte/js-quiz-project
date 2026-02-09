@@ -54,11 +54,18 @@ const vragen = [
 let huidigeScore = 0;
 let huidigeVraagIndex = 0;
 
+function updateProgress() {
+  const progress = document.getElementById("progress");
+  progress.textContent = `Vraag ${huidigeVraagIndex + 1} van ${vragen.length}`;
+}
+
 function showQuestion(vraagObject) {
   const huidige_vraag = document.getElementById("vragen");
   const antwoorden = document.getElementById("weergeven");
   const feedback = document.getElementById("feedback");
   const volgendeKnop = document.getElementById("volgende");
+
+  updateProgress();
 
   huidige_vraag.textContent = vraagObject.vraag;
   antwoorden.innerHTML = "";
@@ -114,7 +121,25 @@ function toonEindscherm() {
   huidige_vraag.textContent = "Quiz voltooid!";
   antwoorden.innerHTML = "";
   feedback.textContent = "Je eindscore is: " + huidigeScore;
+
+  const restartBtn = document.createElement("button");
+  restartBtn.textContent = "Opnieuw starten";
+  restartBtn.classList.add("restart-knop");
+  restartBtn.addEventListener("click", resetQuiz);
+
+  antwoorden.appendChild(restartBtn);
+}
+
+function resetQuiz() {
+  huidigeScore = 0;
+  huidigeVraagIndex = 0;
+
+  document.getElementById("score").textContent = "Score: 0";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("volgende").style.display = "none";
+
+  showQuestion(vragen[0]);
+  updateProgress();
 }
 
 showQuestion(vragen[0]);
-
